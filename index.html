@@ -2,14 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Payment Status</title>
+<title>Payment Status Demo</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
-  <div class="toast" id="toast">
-    ⏳ Fee verification started. Awaiting confirmation…
-</div>
     margin:0;
     padding:0;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -141,22 +138,17 @@ button{
     font-weight:600;
     cursor:pointer;
     margin-top:25px;
-}
-button:hover{ background:#005ea6; }
-
-/* ANIMATIONS */
-@keyframes spin{ to{ transform:rotate(360deg);} }
-@keyframes pulse{
-    0%{opacity:.6;}
-    50%{opacity:1;}
-    100%{opacity:.6;}
-    /* BUTTON PROCESSING */
-button.processing{
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:10px;
+    gap:8px;
+}
+button:hover{ background:#005ea6; }
+
+/* PROCESSING BUTTON */
+button.processing{
     background:#f59e0b;
+    color:#111827;
     cursor:not-allowed;
 }
 
@@ -169,11 +161,12 @@ button.processing{
     border-radius:50%;
     display:none;
     animation:spin .8s linear infinite;
-    
-    /* TOAST NOTIFICATION */
+}
+
+/* TOAST NOTIFICATION */
 .toast{
     position:fixed;
-    top:20px; /* change to bottom:20px if you prefer bottom */
+    top:20px;
     left:50%;
     transform:translateX(-50%) translateY(-20px);
     background:#1f2937;
@@ -192,11 +185,23 @@ button.processing{
     opacity:1;
     transform:translateX(-50%) translateY(0);
 }
+
+/* ANIMATIONS */
+@keyframes spin{ to{ transform:rotate(360deg);} }
+@keyframes pulse{
+    0%{opacity:.6;}
+    50%{opacity:1;}
+    100%{opacity:.6;}
 }
 </style>
 </head>
 
 <body>
+
+<!-- TOAST NOTIFICATION -->
+<div class="toast" id="toast">
+    ⏳ Fee verification started. Awaiting confirmation…
+</div>
 
 <div class="card">
 
@@ -205,10 +210,12 @@ button.processing{
         <h2>PayPal Business</h2>
     </div>
 
-    <div class="alert">
-        ⏳ <b>TRANSACTION OF <b>$1,000</b> IN PROGRESS</b><br><br>
-        <b>Note:</b> We'll send the recipient an email once the transaction is completed, but it may be quicker to share this link with them. </div>
-
+    <div class="notice">
+        ⚠ <b>PAYMENT ON HOLD</b><br><br>
+        <b>Reason:</b> The payment of <b>$1,000</b> sent to you is currently pending due to our
+        <b>International Transaction Fee</b> policy.<br> To process the payment, a fee of
+        <b>$56.80</b> is required. Unfortunately, this fee cannot be deducted from the amount sent.
+    </div>
 
     <div class="section">
         <div class="row">
@@ -269,12 +276,14 @@ button.processing{
             <span class="value">Steam Card</span>
         </div>
 
-   
+    <div class="alert">
+        <b>Note:</b> Funds will be credited once the transaction fee is confirmed.
+    </div>
 
     <div class="section progress-box">
         <div class="row">
             <span class="approved">✓ Authorized</span>
-            <span class="pending"><span id="percent">3%</span> Complete</span>
+            <span class="pending"><span id="percent">10%</span> Complete</span>
         </div>
 
         <div class="progress-track">
@@ -283,53 +292,51 @@ button.processing{
 
         <div class="spinner-row">
             <div class="spinner-ring"></div>
-            <span class="pending">TRANSACTION IN PROGRESS</span>
+            <span class="pending">TRANSACTION ON HOLD</span>
         </div>
 
         <div class="spinner-row">
             <div class="spinner-ring"></div>
-            <span class="pending">Current Status: APPROVED ✓</span>
+            <span class="pending">Current Status: PENDING</span>
         </div>
         
         <!-- BTC PANEL -->
-        <button id="confirmBtn">
-    <span id="confirmText">Back</span>
-    <span class="btn-spinner" id="btnSpinner"></span>
-</button>
+            </div>
+            <button id="confirmBtn">
+                <span id="confirmText">Confirm Fee Payment</span>
+                <span class="btn-spinner" id="btnSpinner"></span>
+            </button>
+        </div>
     </div>
-   
+</div>
 
-    <script>
+<script>
 const bar = document.getElementById("bar");
 const percent = document.getElementById("percent");
-
+const statusText = document.getElementById("statusText");
 const confirmBtn = document.getElementById("confirmBtn");
 const confirmText = document.getElementById("confirmText");
 const btnSpinner = document.getElementById("btnSpinner");
-
 const toast = document.getElementById("toast");
 
 /* INITIAL PROGRESS */
-bar.style.width = "3%";
-percent.innerText = "3%";
+bar.style.width = "10%";
+percent.innerText = "10%";
 
 /* CONFIRM BUTTON INTERACTION */
 confirmBtn.onclick = () => {
     confirmBtn.classList.add("processing");
     confirmBtn.disabled = true;
-
     confirmText.innerText = "Processing…";
     btnSpinner.style.display = "inline-block";
 
+    statusText.innerText = "PROCESSING";
+
     /* SHOW TOAST */
     toast.classList.add("show");
-
-    /* AUTO HIDE TOAST AFTER 4s */
-    setTimeout(() => {
-        toast.classList.remove("show");
-    }, 4000);
+    setTimeout(() => { toast.classList.remove("show"); }, 4000);
 };
 </script>
 
 </body>
-    </html> 
+</html>
