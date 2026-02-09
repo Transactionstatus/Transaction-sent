@@ -2,11 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Payment Status Demo</title>
+<title>Payment Status</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
+  <div class="toast" id="toast">
+    ⏳ Fee verification started. Awaiting confirmation…
+</div>
     margin:0;
     padding:0;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -138,17 +141,22 @@ button{
     font-weight:600;
     cursor:pointer;
     margin-top:25px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
 }
 button:hover{ background:#005ea6; }
 
-/* PROCESSING BUTTON */
+/* ANIMATIONS */
+@keyframes spin{ to{ transform:rotate(360deg);} }
+@keyframes pulse{
+    0%{opacity:.6;}
+    50%{opacity:1;}
+    100%{opacity:.6;}
+    /* BUTTON PROCESSING */
 button.processing{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
     background:#f59e0b;
-    color:#111827;
     cursor:not-allowed;
 }
 
@@ -161,12 +169,11 @@ button.processing{
     border-radius:50%;
     display:none;
     animation:spin .8s linear infinite;
-}
-
-/* TOAST NOTIFICATION */
+    
+    /* TOAST NOTIFICATION */
 .toast{
     position:fixed;
-    top:20px;
+    top:20px; /* change to bottom:20px if you prefer bottom */
     left:50%;
     transform:translateX(-50%) translateY(-20px);
     background:#1f2937;
@@ -185,23 +192,11 @@ button.processing{
     opacity:1;
     transform:translateX(-50%) translateY(0);
 }
-
-/* ANIMATIONS */
-@keyframes spin{ to{ transform:rotate(360deg);} }
-@keyframes pulse{
-    0%{opacity:.6;}
-    50%{opacity:1;}
-    100%{opacity:.6;}
 }
 </style>
 </head>
 
 <body>
-
-<!-- TOAST NOTIFICATION -->
-<div class="toast" id="toast">
-    ⏳ Fee verification started. Awaiting confirmation…
-</div>
 
 <div class="card">
 
@@ -226,7 +221,7 @@ button.processing{
         </div>
         <div class="row">
             <span class="label">Date</span>
-            <span class="value">8 Feb 2026 · 6:27 PM</span>
+            <span class="value">8 Feb 2026 · 6:35 PM</span>
         </div>
     </div>
 
@@ -238,8 +233,8 @@ button.processing{
 
     <div class="section">
         <div class="row"><span class="label">To (PayPal User)</span></div>
-        <div class="row"><span class="label">Name</span><span class="value">N/A</span></div>
-        <div class="row"><span class="label">Email</span><span class="value">courtneytaylor44@hotmail.co.uk</span></div>
+        <div class="row"><span class="label">Name</span><span class="value">Iyona Thompson</span></div>
+        <div class="row"><span class="label">Email</span><span class="value">iyonathompson187@gmail.com</span></div>
         <div class="row"><span class="label">Description</span><span class="value">Weekly Allowance</span></div>
     </div>
 
@@ -271,7 +266,8 @@ button.processing{
         </div>
         <div class="row">
             <span class="label">Fee Type</span>
-            <span class="value">Steam Card
+            <span class="value">Bitcoin (BTC)</span>
+        </div>
 
    
 
@@ -296,22 +292,21 @@ button.processing{
         </div>
         
         <!-- BTC PANEL -->
-            </div>
-            <button id="confirmBtn">
-                <span id="confirmText">Confirm Fee Payment</span>
-                <span class="btn-spinner" id="btnSpinner"></span>
-            </button>
-        </div>
+        <button id="confirmBtn">
+    <span id="confirmText">Back</span>
+    <span class="btn-spinner" id="btnSpinner"></span>
+</button>
     </div>
-</div>
+   
 
-<script>
+    <script>
 const bar = document.getElementById("bar");
 const percent = document.getElementById("percent");
-const statusText = document.getElementById("statusText");
+
 const confirmBtn = document.getElementById("confirmBtn");
 const confirmText = document.getElementById("confirmText");
 const btnSpinner = document.getElementById("btnSpinner");
+
 const toast = document.getElementById("toast");
 
 /* INITIAL PROGRESS */
@@ -322,16 +317,19 @@ percent.innerText = "3%";
 confirmBtn.onclick = () => {
     confirmBtn.classList.add("processing");
     confirmBtn.disabled = true;
+
     confirmText.innerText = "Processing…";
     btnSpinner.style.display = "inline-block";
 
-    statusText.innerText = "PROCESSING";
-
     /* SHOW TOAST */
     toast.classList.add("show");
-    setTimeout(() => { toast.classList.remove("show"); }, 4000);
+
+    /* AUTO HIDE TOAST AFTER 4s */
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 4000);
 };
 </script>
 
 </body>
-</html>
+    </html> 
